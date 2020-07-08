@@ -22,6 +22,7 @@ import type {Jasmine as JestJasmine} from './types';
 
 const JASMINE = require.resolve('./jasmine/jasmineLight');
 
+// NOTE(gp): This is the default runner for jest
 async function jasmine2(
   globalConfig: Config.GlobalConfig,
   config: Config.ProjectConfig,
@@ -41,6 +42,7 @@ async function jasmine2(
 
   const env = jasmine.getEnv();
   const jasmineInterface = jasmineFactory._interface(jasmine, env);
+  // TODO(gp): What's a reporter do?
   Object.assign(environment.global, jasmineInterface);
   env.addReporter(jasmineInterface.jsApiReporter);
 

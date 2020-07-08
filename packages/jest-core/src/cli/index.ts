@@ -191,6 +191,7 @@ const _run10000 = async (
     };
   }
 
+  // TODO(gp):Q:What's a hastemap?
   const {contexts, hasteMapInstances} = await buildContextsAndHasteMaps(
     configs,
     globalConfig,

@@ -66,6 +66,7 @@ export const create = function (createOptions: Record<string, any>): Jasmine {
 // Interface is a reserved word in strict mode, so can't export it as ESM
 export const _interface = function (jasmine: Jasmine, env: any) {
   const jasmineInterface = {
+    // TODO(gp): Important - returns result of 'describe'
     describe(description: string, specDefinitions: SpecDefinitionsFn) {
       return env.describe(description, specDefinitions);
     },
@@ -78,6 +79,7 @@ export const _interface = function (jasmine: Jasmine, env: any) {
       return env.fdescribe(description, specDefinitions);
     },
 
+    // TODO(gp): Important - returns result of 'it'
     it() {
       return env.it.apply(env, arguments);
     },

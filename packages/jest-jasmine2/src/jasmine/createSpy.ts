@@ -54,6 +54,7 @@ function createSpy(name: string, originalFn: Fn): Spy {
     };
 
     callTracker.track(callData);
+    // TODO(gp): Could be important - exec spystrategy
     const returnValue = spyStrategy.exec.apply(this, args);
     callData.returnValue = returnValue;
 

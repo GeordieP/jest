@@ -93,6 +93,7 @@ export default class TestScheduler {
 
     const runInBand = shouldRunInBand(tests, timings, this._globalConfig);
 
+    // TODO(gp): Could be important
     const onResult = async (test: TestRunner.Test, testResult: TestResult) => {
       if (watcher.isInterrupted()) {
         return Promise.resolve();

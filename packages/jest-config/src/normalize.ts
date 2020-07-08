@@ -554,6 +554,7 @@ export default function normalize(
     options.roots = [options.rootDir];
   }
 
+  // NOTE(gp): Set the default runner for jest
   if (!options.testRunner || options.testRunner === 'jasmine2') {
     options.testRunner = require.resolve('jest-jasmine2');
   }

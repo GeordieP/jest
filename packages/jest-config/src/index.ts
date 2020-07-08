@@ -30,6 +30,7 @@ type ReadConfig = {
   projectConfig: Config.ProjectConfig;
 };
 
+// NOTE(gp): Options parsing
 export async function readConfig(
   argv: Config.Argv,
   packageRootOrConfig: Config.Path | Config.InitialOptions,

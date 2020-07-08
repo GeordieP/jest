@@ -83,6 +83,7 @@ async function runTestInternal(
   context?: TestRunnerContext,
 ): Promise<RunTestInternalResult> {
   const testSource = fs.readFileSync(path, 'utf8');
+  // TODO(gp): can we make use of docblocks?
   const docblockPragmas = docblock.parse(docblock.extract(testSource));
   const customEnvironment = docblockPragmas['jest-environment'];
 
@@ -106,9 +107,10 @@ async function runTestInternal(
     require(testEnvironment),
   ).default;
   const testFramework: TestFramework =
+    // TODO(gp): Can we utilize circus?
     process.env.JEST_CIRCUS === '1'
       ? require('jest-circus/runner') // eslint-disable-line import/no-extraneous-dependencies
-      : require(config.testRunner);
+      : require(config.testRunner); // TODO(gp):A: jest-jasmine2 // Q: What's the default test runner?
   const Runtime: typeof RuntimeClass = config.moduleLoader
     ? require(config.moduleLoader)
     : require('jest-runtime');

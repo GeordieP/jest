@@ -15,6 +15,7 @@ type Callsite = {
 };
 
 // this is here to make it possible to avoid huge dependency trees just for types
+// TODO(gp): Modify this type? (Add a 'returnValue'?)
 export type AssertionResult = {
   ancestorTitles: Array<string>;
   duration?: Milliseconds | null;

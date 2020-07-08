@@ -52,6 +52,7 @@ export default class SpyStrategy {
       return identity;
     };
 
+    // TODO(gp): Could be important: SpyStratey exec impl
     this.exec = function () {
       return plan.apply(this, arguments);
     };
@@ -61,6 +62,8 @@ export default class SpyStrategy {
       return getSpy();
     };
 
+    // TODO(gp): Could be important: SpyStrategy "returnValue" impl
+    // Also see returnValues below
     this.returnValue = function (value) {
       plan = function () {
         return value;

@@ -124,9 +124,11 @@ export default async function runJest({
   globalConfig,
   outputStream,
   testWatcher,
+  // TODO(gp):Q: What's a jest hook?
   jestHooks = new JestHook().getEmitter(),
   startRun,
   changedFilesPromise,
+  // TODO(gp):Q: can onComplete be used?
   onComplete,
   failedTestsCache,
   filter,
