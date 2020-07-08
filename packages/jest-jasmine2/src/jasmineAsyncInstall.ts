@@ -10,22 +10,22 @@
  * returning a promise from `it/test` and `before/afterEach/All` blocks.
  */
 
-import type {Config, Global} from '@jest/types';
+import type { Config, Global } from '@jest/types';
 import co from 'co';
 import isGeneratorFn from 'is-generator-fn';
 import throat from 'throat';
 import isError from './isError';
-import type {Jasmine} from './types';
+import type { Jasmine } from './types';
 import type Spec from './jasmine/Spec';
-import type {DoneFn, QueueableFn} from './queueRunner';
+import type { DoneFn, QueueableFn } from './queueRunner';
 
 function isPromise(obj: any): obj is PromiseLike<unknown> {
   return obj && typeof obj.then === 'function';
 }
 
-const doneFnNoop = () => {};
+const doneFnNoop = () => { };
 
-doneFnNoop.fail = () => {};
+doneFnNoop.fail = () => { };
 
 function promisifyLifeCycleFunction(
   originalFn: (beforeAllFunction: QueueableFn['fn'], timeout?: number) => void,
@@ -67,7 +67,7 @@ function promisifyLifeCycleFunction(
 
       if (isPromise(returnValue)) {
         returnValue.then(done.bind(null, null), (error: Error) => {
-          const {isError: checkIsError, message} = isError(error);
+          const { isError: checkIsError, message } = isError(error);
 
           if (message) {
             extraError.message = message;
@@ -120,25 +120,32 @@ function promisifyIt(
     // https://crbug.com/v8/7142
     extraError.stack = extraError.stack;
 
+    // NOTE(gp): Important?
     const asyncJestTest = function (done: DoneFn) {
       const wrappedFn = isGeneratorFn(fn) ? co.wrap(fn) : fn;
       const returnValue = wrappedFn.call({}, doneFnNoop);
 
       if (isPromise(returnValue)) {
-        returnValue.then(done.bind(null, null), (error: Error) => {
-          const {isError: checkIsError, message} = isError(error);
+        returnValue.then(
+          (resolvedValue: any) => {
+            done(null);
+            console.log("Test resolved", resolvedValue)
+          },
+          // done.bind(null, null),
+          (error: Error) => {
+            const { isError: checkIsError, message } = isError(error);
 
-          if (message) {
-            extraError.message = message;
-          }
+            if (message) {
+              extraError.message = message;
+            }
 
-          if (jasmine.Spec.isPendingSpecException(error)) {
-            env.pending(message!);
-            done();
-          } else {
-            done.fail(checkIsError ? error : extraError);
-          }
-        });
+            if (jasmine.Spec.isPendingSpecException(error)) {
+              env.pending(message!);
+              done();
+            } else {
+              done.fail(checkIsError ? error : extraError);
+            }
+          });
       } else if (returnValue === undefined) {
         done();
       } else {
