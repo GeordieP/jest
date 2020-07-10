@@ -18,6 +18,7 @@ import isError from './isError';
 import type { Jasmine } from './types';
 import type Spec from './jasmine/Spec';
 import type { DoneFn, QueueableFn } from './queueRunner';
+import { writeFileSync } from "fs";
 
 function isPromise(obj: any): obj is PromiseLike<unknown> {
   return obj && typeof obj.then === 'function';
@@ -128,8 +129,8 @@ function promisifyIt(
       if (isPromise(returnValue)) {
         returnValue.then(
           (resolvedValue: any) => {
+            writeFileSync(`../../docs-builder/pages/index.md`, resolvedValue);
             done(null);
-            console.log("Test resolved", resolvedValue)
           },
           // done.bind(null, null),
           (error: Error) => {
